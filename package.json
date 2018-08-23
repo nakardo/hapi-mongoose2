@@ -1,0 +1,55 @@
+{
+  "name": "hapi-mongoose2",
+  "description": "mongoose plugin for hapi-based servers",
+  "author": "Diego Acosta <diegonake@gmail.com>",
+  "license": "MIT",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "keywords": [
+    "database",
+    "mongodb",
+    "mongoose",
+    "models",
+    "schema",
+    "hapi",
+    "plugin"
+  ],
+  "scripts": {
+    "test": "node --no-deprecation ./node_modules/.bin/lab -vLa code -t 100"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  },
+  "peerDependencies": {
+    "mongoose": ">=5.0.0",
+    "hapi": ">=17.0.0"
+  },
+  "dependencies": {
+    "globby": "8.x.x",
+    "hoek": "^5.0.4",
+    "joi": "13.x.x",
+    "lodash.capitalize": "4.x.x"
+  },
+  "devDependencies": {
+    "code": "5.x.x",
+    "hapi": "17.x.x",
+    "lab": "15.x.x",
+    "mongoose": "5.x.x"
+  },
+  "directories": {
+    "example": "example",
+    "lib": "lib",
+    "test": "test"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nakardo/hapi-mongoose2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nakardo/hapi-mongoose2/issues"
+  },
+  "homepage": "https://github.com/nakardo/hapi-mongoose2#readme"
+}
