@@ -1,0 +1,39 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/node:8
+      - image: circleci/mongo:4
+
+    steps:
+      - checkout
+
+      - run:
+          name: Install mongo
+          command: |
+            sudo apt-get install -y apt-transport-https
+            sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 9DA31620334BD75D9DCB49F368818C72E52529D4
+            echo "deb [ arch=amd64 ] https://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/4.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-4.0.list
+            sudo apt-get update
+            sudo apt-get install -y mongodb-org-shell=4.0.1
+
+      - run:
+          name: Create database and user
+          command: |
+            mongo --version
+            mongo test-auth --eval "db.createUser({ user: 'user', pwd: 'password', roles: [] });"
+          no_output_timeout: "5s"
+
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "package.json" }}
+          - v1-dependencies-
+
+      - run: npm install
+
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+
+      - run: npm test
