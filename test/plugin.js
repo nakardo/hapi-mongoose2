@@ -152,7 +152,7 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    schemaPatterns: ['test/schemas/empty.json']
+                    loadSchemasFrom: ['test/schemas/empty.json']
                 }
             }
         };
@@ -169,7 +169,7 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    schemaPatterns: ['test/schemas/fns/invalid-fn.js']
+                    loadSchemasFrom: ['test/schemas/fns/invalid-fn.js']
                 }
             }
         };
@@ -186,7 +186,7 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    schemaPatterns: [
+                    loadSchemasFrom: [
                         'test/**/*.{js,json}',
                         '!test/*.js',
                         '!**/*.json',
@@ -214,7 +214,7 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    schemaPatterns: ['test/schemas/fns/admin.js']
+                    loadSchemasFrom: ['test/schemas/fns/admin.js']
                 }
             }
         };
@@ -236,7 +236,7 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    schemaPatterns: [
+                    loadSchemasFrom: [
                         'test/**/*.{js,json}',
                         '!test/*.js',
                         '!**/*.json',
@@ -263,7 +263,7 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    schemaPatterns: ['test/schemas/fns/admin.js']
+                    loadSchemasFrom: ['test/schemas/fns/admin.js']
                 }
             }
         };
@@ -298,7 +298,7 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    schemaPatterns: [
+                    loadSchemasFrom: [
                         'test/**/*.{js,json}',
                         '!test/*.js',
                         '!**/*.json',
@@ -400,11 +400,11 @@ describe('connections', () => {
                 connections: [
                     {
                         uri: 'mongodb://localhost:27017/test-1',
-                        schemaPatterns: ['test/**/animal.js']
+                        loadSchemasFrom: ['test/**/animal.js']
                     },
                     {
                         uri: 'mongodb://localhost:27017/test-2',
-                        schemaPatterns: ['test/**/blog.js']
+                        loadSchemasFrom: ['test/**/blog.js']
                     }
                 ]
             }

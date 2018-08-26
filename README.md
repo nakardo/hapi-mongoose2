@@ -11,7 +11,7 @@ aliases can be created to reference connections. The plugin options are:
   - `connection` - an object containing:
     - `uri` - a mongo uri
     - `alias` - (optional) a database name alias which is only used to reference the connection when multiple are created. otherwise ignored.
-    - `schemaPatterns` - (optional) an array of [globs](https://github.com/isaacs/minimatch#usage) where schemas can be found. matching files musr export a `mongoose.Schema` object or a function with the signature `async function(server)` that returns a schema.
+    - `loadSchemasFrom` - (optional) an array of [globs](https://github.com/isaacs/minimatch#usage) where schemas can be found. matching files musr export a `mongoose.Schema` object or a function with the signature `async function(server)` that returns a schema.
     - `options` - (optional) options passed to `mongoose` [createConnection](https://mongoosejs.com/docs/connections.html#options) method. unknown properties are allowed:
       - `auth` - authentication credentials
         - `user`
@@ -37,7 +37,7 @@ const plugin = {
             {
                 alias: 'safebox',
                 uri: 'mongodb://localhost:27017/secrets',
-                schemaPatterns: [
+                loadSchemasFrom: [
                     'src/schemas',
                     '!.{md,json}'
                 ],

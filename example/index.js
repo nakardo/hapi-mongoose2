@@ -8,7 +8,7 @@ const plugin = {
     options: {
         connection: {
             uri: 'mongodb://localhost:27017/test',
-            schemaPatterns: [
+            loadSchemasFrom: [
                 'test/schemas',
                 '!**/*.json'
             ],
