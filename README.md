@@ -11,8 +11,8 @@ aliases can be created to reference connections. The plugin options are:
   - `connection` - an object containing:
     - `uri` - a mongo uri
     - `alias` - (optional) a database name alias which is only used to reference the connection when multiple are created. otherwise ignored.
-    - `schemaPatterns` - (optional) an array of globs where schemas can be found. matching files must export a `mongoose.Schema` object.
-    - `options` - (optional) see `mongoose` connection options. unknown properties are allowed:
+    - `schemaPatterns` - (optional) an array of [globs](https://github.com/isaacs/minimatch#usage) where schemas can be found. matching files must export a `mongoose.Schema` object.
+    - `options` - (optional) options passed to `mongoose` [createConnection](https://mongoosejs.com/docs/connections.html#options) method. unknown properties are allowed:
       - `auth` - authentication credentials
         - `user`
         - `password`
@@ -22,11 +22,11 @@ aliases can be created to reference connections. The plugin options are:
 
 Connection and models are accessible under the `server.app.mongo` property. When multiple connections are created the database name or `alias` is used as namespace for accessing each database properties.
 
+Models are named as the filename matching the schema pattern. Model name first letter is capitalized by default. e.g. `Animal`.
+
 ## Example
 
 ```javascript
-const Hapi = require('hapi');
-
 const plugin = {
     plugin: require('hapi-mongoose2'),
     options: {
@@ -38,8 +38,8 @@ const plugin = {
                 alias: 'safebox',
                 uri: 'mongodb://localhost:27017/secrets',
                 schemaPatterns: [
-                    'src/schemas/**/*.js',
-                    '!*.{md,json}'
+                    'src/schemas',
+                    '!.{md,json}'
                 ],
                 options: {
                     auth: {
