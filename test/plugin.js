@@ -145,7 +145,43 @@ describe('connection', () => {
         expect(mongo.connection.constructor.name).to.equal('NativeConnection');
     });
 
-    it('loads schemas from patterns and renames keys', async () => {
+    it('throws when loading a json file', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test',
+                    schemaPatterns: ['test/schemas/empty.json']
+                }
+            }
+        };
+        const server = Hapi.server();
+        await expect(server.register(plugin)).to.reject(
+            'unable to create model for file: ' +
+            '/Users/nakardo/Projects/hapi-mongoose2/test/schemas/empty.json'
+        );
+    });
+
+    it('throws when loading an invalid function file', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test',
+                    schemaPatterns: ['test/schemas/fns/invalid-fn.js']
+                }
+            }
+        };
+        const server = Hapi.server();
+        await expect(server.register(plugin)).to.reject(
+            'unable to create model for file: /Users/nakardo/Projects/' +
+            'hapi-mongoose2/test/schemas/fns/invalid-fn.js'
+        );
+    });
+
+    it('loads schema files from patterns and renames keys', async () => {
 
         const plugin = {
             plugin: HapiMongoose,
@@ -155,7 +191,9 @@ describe('connection', () => {
                     schemaPatterns: [
                         'test/**/*.{js,json}',
                         '!test/*.js',
-                        '!**/*.json'
+                        '!**/*.json',
+                        '!**/invalid-fn.js',
+                        '!test/schemas/fns/admin.js'
                     ]
                 }
             }
@@ -171,6 +209,90 @@ describe('connection', () => {
         expect(models).to.only.include(['Animal', 'Blog']);
     });
 
+    it('loads schema functions from patterns and renames keys', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test',
+                    schemaPatterns: ['test/schemas/fns/admin.js']
+                }
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
+
+        expect(server.app).to.include('mongo');
+        expect(server.app.mongo).to.include('models');
+
+        const { models } = server.app.mongo;
+        expect(models).to.be.an.object();
+        expect(models).to.only.include(['Admin']);
+    });
+
+    it('loads all schemas from patterns and renames keys', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test',
+                    schemaPatterns: [
+                        'test/**/*.{js,json}',
+                        '!test/*.js',
+                        '!**/*.json',
+                        '!**/invalid-fn.js'
+                    ]
+                }
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
+
+        expect(server.app).to.include('mongo');
+        expect(server.app.mongo).to.include('models');
+
+        const { models } = server.app.mongo;
+        expect(models).to.be.an.object();
+        expect(models).to.only.include(['Animal', 'Blog', 'Admin']);
+    });
+
+    it('passes server and performs actions on function schemas', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test',
+                    schemaPatterns: ['test/schemas/fns/admin.js']
+                }
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
+
+        const doc = {
+            name: 'Quentin',
+            last: 'Tarantino'
+        };
+
+        server.event('admin-created');
+        const adminCreated = new Promise((resolve) => {
+
+            server.events.on('admin-created', (obj) => {
+
+                expect(obj).to.contain(doc);
+                resolve();
+            });
+        });
+
+        const { Admin } = server.app.mongo.models;
+        const admin = await Admin.create(doc);
+        await adminCreated;
+        await admin.remove();
+    });
+
     it('creates a document using a model', async () => {
 
         const plugin = {
@@ -181,7 +303,8 @@ describe('connection', () => {
                     schemaPatterns: [
                         'test/**/*.{js,json}',
                         '!test/*.js',
-                        '!**/*.json'
+                        '!**/*.json',
+                        '!**/invalid-fn.js'
                     ]
                 }
             }

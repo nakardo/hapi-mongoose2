@@ -10,7 +10,7 @@ const plugin = {
             uri: 'mongodb://localhost:27017/test',
             schemaPatterns: [
                 'test/schemas',
-                '!.json'
+                '!**/*.json'
             ],
             options: {
                 autoIndex: false,
