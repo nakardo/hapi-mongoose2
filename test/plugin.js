@@ -158,8 +158,7 @@ describe('connection', () => {
         };
         const server = Hapi.server();
         await expect(server.register(plugin)).to.reject(
-            'unable to create model for file: ' +
-            '/Users/nakardo/Projects/hapi-mongoose2/test/schemas/empty.json'
+            'unable to create model for file: empty.json'
         );
     });
 
@@ -176,8 +175,7 @@ describe('connection', () => {
         };
         const server = Hapi.server();
         await expect(server.register(plugin)).to.reject(
-            'unable to create model for file: /Users/nakardo/Projects/' +
-            'hapi-mongoose2/test/schemas/fns/invalid-fn.js'
+            'unable to create model for file: invalid-fn.js'
         );
     });
 
