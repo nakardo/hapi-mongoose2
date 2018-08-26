@@ -1,5 +1,8 @@
 # hapi-mongoose2
 
+[![npm version](https://badge.fury.io/js/hapi-mongoose2.svg)](https://badge.fury.io/js/hapi-mongoose2)
+[![CircleCI](https://circleci.com/gh/nakardo/hapi-mongoose2.svg?style=svg)](https://circleci.com/gh/nakardo/hapi-mongoose2)
+
 Mongoose plugin for hapi-based servers. Supports connecting to one or multiple
 databases and look up and register models by connection. Additionally
 aliases can be created to reference connections. The plugin options are:
