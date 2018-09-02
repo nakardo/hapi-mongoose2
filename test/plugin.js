@@ -3,10 +3,12 @@
 const HapiMongoose = require('../lib');
 const Mongoose = require('mongoose');
 const Hapi = require('hapi');
+const { expect } = require('code');
+
 const { connected } = Mongoose.STATES;
 
-const { expect } = require('code');
-const { describe, it } = exports.lab = require('lab').script();
+const lab = exports.lab = require('lab').script();
+const { describe, it } = lab;
 
 it('can be registered once', async () => {
 
@@ -360,7 +362,7 @@ describe('connections', () => {
             expect(connection.readyState).to.equal(connected);
             expect(models).to.be.an.object();
             expect(models).to.be.empty();
-        };
+        }
     });
 
     it('uses alias for a connection', async () => {
