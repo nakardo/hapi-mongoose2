@@ -2,9 +2,10 @@
 
 const Joi = require('joi');
 const Schema = require('../lib/schema');
-
 const { expect } = require('code');
-const { describe, it } = exports.lab = require('lab').script();
+
+const lab = exports.lab = require('lab').script();
+const { describe, it } = lab;
 
 describe('Schema.options', () => {
 
