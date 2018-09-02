@@ -3,17 +3,15 @@
 [![npm version](https://badge.fury.io/js/hapi-mongoose2.svg)](https://badge.fury.io/js/hapi-mongoose2)
 [![CircleCI](https://circleci.com/gh/nakardo/hapi-mongoose2.svg?style=svg)](https://circleci.com/gh/nakardo/hapi-mongoose2) [![Greenkeeper badge](https://badges.greenkeeper.io/nakardo/hapi-mongoose2.svg)](https://greenkeeper.io/)
 
-Mongoose plugin for hapi-based servers. Supports connecting to one or multiple
-databases and look up and register models by connection. Additionally
-aliases can be created to reference connections. The plugin options are:
+Mongoose plugin for hapi-based servers. Supports connecting to one or multiple databases and look up and register models by connection. Optionally, aliases can be created to reference connections. The plugin options are:
 
 - `options` - a `connection` or an array of `connection`s where:
   - `connection` - an object containing:
     - `uri` - a mongo uri
     - `alias` - (optional) a database name alias which is only used to reference the connection when multiple are created. otherwise ignored.
-    - `loadSchemasFrom` - (optional) an array of [globs](https://github.com/isaacs/minimatch#usage) where schemas can be found. matching files musr export a `mongoose.Schema` object or a function with the signature `async function(server)` that returns a schema.
+    - `loadSchemasFrom` - (optional) an array of [globs](https://github.com/isaacs/minimatch#usage) from where schemas will be loaded. matching files must export a `mongoose.Schema` object or a function with the signature `async function(server)` returning a schema.
     - `options` - (optional) options passed to `mongoose` [createConnection](https://mongoosejs.com/docs/connections.html#options) method. unknown properties are allowed:
-      - `auth` - authentication credentials
+      - `auth` - an object with auth credentials
         - `user`
         - `password`
       - `autoIndex`
