@@ -20,7 +20,7 @@ Mongoose plugin for hapi-based servers. Supports connecting to one or multiple d
   - `connections` - an array of `connection` objects as described above.
   - `decorations` - (optional) an array of [interfaces](https://hapijs.com/api#-serverdecoratetype-property-method-options) to be decorated using `server.decorate` method. allowed values are `server`, `request`.
 
-Connection and models are accessible under the `server.app.mongo` property. When multiple connections are created the database name or `alias` is used as namespace for accessing each database properties.
+Connection and models are accessible under the `server.app.mongo` property. When multiple connections are created the database name or `alias` is used as namespace for accessing each database properties. Same applies for decorated interfaces.
 
 Models are named as the filename matching the schema pattern. Model name first letter is capitalized by default. e.g. `Animal`.
 
@@ -51,18 +51,30 @@ const plugin = {
                 }
             }
         ],
-        decorations: ['server']
+        decorations: ['request']
     }
 };
 
 const server = new Hapi.server();
 await server.register(plugin);
 
-// Using database `secrets`:
+// Using database `secrets` from:
+// 1 - `server.app` object
+// 2 - `request` decorated object
 
 const { Admin } = server.app.mongo.safebox.models;
 await Admin.create({ name: 'Quentin', last: 'Tarantino' });
 await server.app.mongo.safebox.connection.close();
+
+server.route({
+    method: 'GET',
+    path: '/',
+    handler: function (request) {
+        const { Admin } = request.mongo.safebox.models;
+        return Admin.findOne({ name: 'Quentin' }).exec();
+    }
+});
+
 ```
 
 ## Dependencies
