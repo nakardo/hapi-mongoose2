@@ -55,21 +55,6 @@ describe('Schema.options', () => {
         expect(result.connection.uri).to.equal(options.connection.uri);
     });
 
-    it('defaults loadSchemasFrom to empty array', async () => {
-
-        const options = {
-            connection: {
-                uri: 'mongodb://localhost:27017/test'
-            }
-        };
-        const result = await Joi.validate(options, Schema.options);
-        expect(result).to.include('connection');
-        expect(result.connection).to.be.an.object();
-        expect(result.connection).to.include('loadSchemasFrom');
-        expect(result.connection.loadSchemasFrom).to.be.an.array();
-        expect(result.connection.loadSchemasFrom).to.be.empty();
-    });
-
     it('creates connection with an alias and trims value', async () => {
 
         const options = {
@@ -102,6 +87,35 @@ describe('Schema.options', () => {
         expect(result.connection.loadSchemasFrom).to.be.an.array();
         expect(result.connection.loadSchemasFrom).to.equal(
             options.connection.loadSchemasFrom
+        );
+    });
+
+    it('creates connection with decorations', async () => {
+
+        const options = {
+            connection: {
+                uri: 'mongodb://localhost:27017/test'
+            },
+            decorations: ['server', 'request']
+        };
+        const result = await Joi.validate(options, Schema.options);
+        expect(result).to.include('decorations');
+        expect(result.decorations).to.be.an.array();
+        expect(result.decorations).to.equal(options.decorations);
+    });
+
+    it('expect decorations to be known values', async () => {
+
+        const options = {
+            connection: {
+                uri: 'mongodb://localhost:27017/test'
+            },
+            decorations: ['handler', 'toolkit']
+        };
+        await expect(Joi.validate(options, Schema.options)).to.reject(
+            'child \"decorations\" fails because [\"decorations\" at ' +
+            'position 0 fails because [\"0\" must be one of [server, ' +
+            'request]]]'
         );
     });
 

@@ -1,14 +1,15 @@
 # hapi-mongoose2
 
 [![npm version](https://badge.fury.io/js/hapi-mongoose2.svg)](https://badge.fury.io/js/hapi-mongoose2)
-[![CircleCI](https://circleci.com/gh/nakardo/hapi-mongoose2.svg?style=svg)](https://circleci.com/gh/nakardo/hapi-mongoose2) [![Greenkeeper badge](https://badges.greenkeeper.io/nakardo/hapi-mongoose2.svg)](https://greenkeeper.io/)
+[![Greenkeeper badge](https://badges.greenkeeper.io/nakardo/hapi-mongoose2.svg)](https://greenkeeper.io/)
+[![CircleCI](https://circleci.com/gh/nakardo/hapi-mongoose2.svg?style=svg)](https://circleci.com/gh/nakardo/hapi-mongoose2)
 
-Mongoose plugin for hapi-based servers. Supports connecting to one or multiple databases and look up and register models by connection. Optionally, aliases can be created to reference connections. The plugin options are:
+Mongoose plugin for hapi-based servers. Supports connecting to one or multiple databases and look up and register models by connection. The plugin options are:
 
 - `options` - a `connection` or an array of `connection`s where:
   - `connection` - an object containing:
-    - `uri` - a mongo uri
-    - `alias` - (optional) a database name alias which is only used to reference the connection when multiple are created. otherwise ignored.
+    - `uri` - a mongo uri string
+    - `alias` - (optional) a database name alias used to namespace connections when multiple are created. otherwise ignored.
     - `loadSchemasFrom` - (optional) an array of [globs](https://github.com/isaacs/minimatch#usage) from where schemas will be loaded. matching files must export a `mongoose.Schema` object or a function with the signature `async function(server)` returning a schema.
     - `options` - (optional) options passed to `mongoose` [createConnection](https://mongoosejs.com/docs/connections.html#options) method. unknown properties are allowed:
       - `auth` - an object with auth credentials
@@ -17,6 +18,7 @@ Mongoose plugin for hapi-based servers. Supports connecting to one or multiple d
       - `autoIndex`
       - `bufferCommands`
   - `connections` - an array of `connection` objects as described above.
+  - `decorations` - (optional) an array of [interfaces](https://hapijs.com/api#-serverdecoratetype-property-method-options) to be decorated using `server.decorate` method. allowed values are `server`, `request`.
 
 Connection and models are accessible under the `server.app.mongo` property. When multiple connections are created the database name or `alias` is used as namespace for accessing each database properties.
 
@@ -48,7 +50,8 @@ const plugin = {
                     bufferCommands: true
                 }
             }
-        ]
+        ],
+        decorations: ['server']
     }
 };
 

@@ -7,12 +7,14 @@
   "main": "lib/index.js",
   "keywords": [
     "database",
+    "mongo",
     "mongodb",
     "mongoose",
     "models",
     "schema",
     "hapi",
-    "plugin"
+    "plugin",
+    "hapi-mongoose"
   ],
   "scripts": {
     "test": "node --no-deprecation ./node_modules/.bin/lab -vLa code -t 100"
@@ -26,14 +28,14 @@
   },
   "dependencies": {
     "globby": "8.x.x",
-    "hoek": "^5.0.4",
+    "hoek": "5.x.x",
     "joi": "13.x.x",
     "lodash.capitalize": "4.x.x"
   },
   "devDependencies": {
     "code": "5.x.x",
     "hapi": "17.x.x",
-    "lab": "^16.0.0",
+    "lab": "16.x.x",
     "mongoose": "5.x.x"
   },
   "directories": {
