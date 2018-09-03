@@ -51,7 +51,7 @@ const plugin = {
                 }
             }
         ],
-        decorations: ['request']
+        decorations: ['request', 'server']
     }
 };
 
@@ -61,10 +61,10 @@ await server.register(plugin);
 // Using database `secrets` from:
 // 1 - `server.app` object
 // 2 - `request` decorated object
+// 3 - `server` decorated object
 
 const { Admin } = server.app.mongo.safebox.models;
 await Admin.create({ name: 'Quentin', last: 'Tarantino' });
-await server.app.mongo.safebox.connection.close();
 
 server.route({
     method: 'GET',
@@ -75,6 +75,7 @@ server.route({
     }
 });
 
+await server.mongo.safebox.connection.close();
 ```
 
 ## Dependencies
