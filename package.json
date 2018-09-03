@@ -7,12 +7,14 @@
   "main": "lib/index.js",
   "keywords": [
     "database",
+    "mongo",
     "mongodb",
     "mongoose",
     "models",
     "schema",
     "hapi",
-    "plugin"
+    "plugin",
+    "hapi-mongoose"
   ],
   "scripts": {
     "test": "node --no-deprecation ./node_modules/.bin/lab -vLa code -t 100"
