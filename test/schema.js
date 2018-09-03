@@ -94,32 +94,28 @@ describe('Schema.options', () => {
 
         const options = {
             connection: {
-                uri: 'mongodb://localhost:27017/test',
-                decorations: ['server', 'request']
-            }
+                uri: 'mongodb://localhost:27017/test'
+            },
+            decorations: ['server', 'request']
         };
         const result = await Joi.validate(options, Schema.options);
-        expect(result).to.include('connection');
-        expect(result.connection).to.be.an.object();
-        expect(result.connection).to.include('decorations');
-        expect(result.connection.decorations).to.be.an.array();
-        expect(result.connection.decorations).to.equal(
-            options.connection.decorations
-        );
+        expect(result).to.include('decorations');
+        expect(result.decorations).to.be.an.array();
+        expect(result.decorations).to.equal(options.decorations);
     });
 
     it('expect decorations to be known values', async () => {
 
         const options = {
             connection: {
-                uri: 'mongodb://localhost:27017/test',
-                decorations: ['handler', 'toolkit']
-            }
+                uri: 'mongodb://localhost:27017/test'
+            },
+            decorations: ['handler', 'toolkit']
         };
         await expect(Joi.validate(options, Schema.options)).to.reject(
-            'child "connection" fails because [child "decorations" fails ' +
-            'because ["decorations" at position 0 fails because ["0" must ' +
-            'be one of [server, request]]]]'
+            'child \"decorations\" fails because [\"decorations\" at ' +
+            'position 0 fails because [\"0\" must be one of [server, ' +
+            'request]]]'
         );
     });
 

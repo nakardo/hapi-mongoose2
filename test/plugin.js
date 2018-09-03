@@ -293,6 +293,62 @@ describe('connection', () => {
         await admin.remove();
     });
 
+    it('creates server decoration', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test'
+                },
+                decorations: ['server']
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
+
+        expect(server).to.include('mongo');
+        expect(server.mongo).to.only.include(['connection', 'models']);
+    });
+
+    it('creates request decoration', async () => {
+
+        const plugins = [
+            {
+                plugin: HapiMongoose,
+                options: {
+                    connection: {
+                        uri: 'mongodb://localhost:27017/test'
+                    },
+                    decorations: ['server']
+                }
+            },
+            {
+                register: (server) => {
+
+                    server.route({
+                        method: 'GET',
+                        path: '/',
+                        handler: (request, h) => {
+
+                            expect(request).to.include('mongo');
+                            expect(request.mongo).to.only.include([
+                                'connection',
+                                'models'
+                            ]);
+                            return h.continue;
+                        }
+                    });
+                },
+                name: 'test'
+            }
+        ];
+        const server = Hapi.server();
+        await server.register(plugins);
+
+        await server.inject({ method: 'GET', url: '/' });
+    });
+
     it('creates a document using a model', async () => {
 
         const plugin = {
@@ -422,5 +478,101 @@ describe('connections', () => {
         expect(mongo['test-1'].models).to.only.include('Animal');
         expect(mongo['test-2'].models).to.be.an.object();
         expect(mongo['test-2'].models).to.only.include('Blog');
+    });
+
+    it('creates server decoration for all connections', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connections: [
+                    {
+                        uri: 'mongodb://localhost:27017/test-1'
+                    },
+                    {
+                        uri: 'mongodb://localhost:27017/test-2'
+                    }
+                ],
+                decorations: ['server']
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
+
+        expect(server).to.include('mongo');
+
+        const { mongo } = server;
+        expect(mongo).to.include(['test-1', 'test-2']);
+        expect(mongo['test-1']).to.only.include(['connection', 'models']);
+        expect(mongo['test-2']).to.only.include(['connection', 'models']);
+    });
+
+    it('creates request decoration for all connections', async () => {
+
+        const plugins = [
+            {
+                plugin: HapiMongoose,
+                options: {
+                    connections: [
+                        {
+                            uri: 'mongodb://localhost:27017/test-1'
+                        },
+                        {
+                            uri: 'mongodb://localhost:27017/test-2'
+                        }
+                    ],
+                    decorations: ['server']
+                }
+            },
+            {
+                register: (server) => {
+
+                    server.route({
+                        method: 'GET',
+                        path: '/test-1',
+                        handler: (request, h) => {
+
+                            expect(request).to.include('mongo');
+
+                            const { mongo } = request;
+                            expect(mongo).to.include('test-1');
+                            expect(mongo['test-1']).to.only.include([
+                                'connection',
+                                'models'
+                            ]);
+                            return h.continue;
+                        }
+                    });
+                },
+                name: 'test-1'
+            },
+            {
+                register: (server) => {
+
+                    server.route({
+                        method: 'GET',
+                        path: '/test-2',
+                        handler: (request, h) => {
+
+                            expect(request).to.include('mongo');
+
+                            const { mongo } = request;
+                            expect(mongo).to.include('test-2');
+                            expect(mongo['test-2']).to.only.include([
+                                'connection',
+                                'models'
+                            ]);
+                            return h.continue;
+                        }
+                    });
+                },
+                name: 'test-2'
+            }
+        ];
+        const server = Hapi.server();
+        await server.register(plugins);
+
+        await server.inject({ method: 'GET', url: '/test-1' });
+        await server.inject({ method: 'GET', url: '/test-2' });
     });
 });
