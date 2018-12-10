@@ -77,10 +77,3 @@ server.route({
 
 await server.mongo.safebox.connection.close();
 ```
-
-## Dependencies
-
-```
-"mongoose": ">=5.0.0",
-"hapi": ">=17.0.0"
-```
