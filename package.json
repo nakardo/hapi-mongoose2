@@ -22,21 +22,17 @@
   "engines": {
     "node": ">=8.9.0"
   },
-  "peerDependencies": {
-    "mongoose": ">=5.0.0",
-    "hapi": ">=17.0.0"
-  },
   "dependencies": {
-    "globby": "8.x.x",
-    "hoek": "5.x.x",
-    "joi": "^14.0.0",
-    "lodash.capitalize": "4.x.x"
+    "globby": "^8.0.1",
+    "hoek": "^6.1.2",
+    "joi": "^14.3.0",
+    "mongoose": "^5.3.15",
+    "lodash.capitalize": "^4.2.1"
   },
   "devDependencies": {
-    "code": "5.x.x",
-    "hapi": "17.x.x",
-    "lab": "^17.0.0",
-    "mongoose": "5.x.x"
+    "code": "^5.2.4",
+    "hapi": "^17.8.1",
+    "lab": "^18.0.0"
   },
   "directories": {
     "example": "example",
