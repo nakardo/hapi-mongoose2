@@ -17,7 +17,7 @@
     "hapi-mongoose"
   ],
   "scripts": {
-    "test": "node --no-deprecation ./node_modules/.bin/lab -vLa code -t 100"
+    "test": "lab -vLa code -t 100"
   },
   "engines": {
     "node": ">=8.9.0"
