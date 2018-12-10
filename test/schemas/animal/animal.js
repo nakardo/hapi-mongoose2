@@ -2,6 +2,8 @@
 
 const Mongoose = require('mongoose');
 
+Mongoose.set('useCreateIndex', true);
+
 const animalSchema = new Mongoose.Schema({
     name: String,
     type: String,
