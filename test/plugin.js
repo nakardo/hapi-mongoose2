@@ -44,15 +44,28 @@ describe('connection', () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://invalid:27017/test'
+                    uri: 'http://google.com'
                 }
             }
         };
         const server = Hapi.server();
         await expect(server.register(plugin)).to.reject(
-            'failed to connect to server [invalid:27017] on first connect ' +
-            '[MongoNetworkError: getaddrinfo ENOTFOUND invalid invalid:27017]'
+            'Invalid connection string'
         );
+    });
+
+    it('connects to a replica set', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017,localhost:27018/test?replicaSet=rs0'
+                }
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
     });
 
     it('connects to authenticated database', async () => {
