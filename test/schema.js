@@ -27,20 +27,6 @@ describe('Schema.options', () => {
         );
     });
 
-    it('requires uri to be a mongodb schema', async () => {
-
-        const options = {
-            connection: {
-                uri: 'http://hapijs.com/api'
-            }
-        };
-        await expect(Joi.validate(options, Schema.options)).to.reject(
-            'child "connection" fails because [child "uri" fails because ' +
-            '["uri" must be a valid uri with a scheme matching the mongodb ' +
-            'pattern]]'
-        );
-    });
-
     it('creates a connection', async () => {
 
         const options = {
