@@ -60,7 +60,7 @@ describe('connection', () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://localhost:27017,localhost:27018/test?replicaSet=rs0',
+                    uri: 'mongodb://localhost:27017,localhost:27018/test?replicaSet=rs0'
                 }
             }
         };
