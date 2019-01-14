@@ -3,10 +3,12 @@ jobs:
   build:
     docker:
       - image: circleci/node:8
+
       - image: circleci/mongo:4
-        command: [mongod, --replSet, "rs0", --port, 27017]
+        command: mongod --replSet "rs0"
+
       - image: circleci/mongo:4
-        command: [mongod, --replSet, "rs0", --port, 27018]
+        command: mongod --replSet "rs0" --port 27018
 
     steps:
       - checkout
@@ -22,11 +24,13 @@ jobs:
 
       - run:
           name: Create database and user
+          no_output_timeout: 1m
           command: |
             mongo --version
-            mongo --port 27017 --eval "rs.initiate()"
-            mongo --port 27017 test-auth --eval "db.createUser({ user: 'user', pwd: 'password', roles: [] });"
-          no_output_timeout: "5s"
+            mongo --eval "rs.initiate()"
+            mongo --eval "rs.add('localhost:27018')"
+            sleep 10
+            mongo test-auth --eval "db.createUser({ user: 'user', pwd: 'password', roles: [] });"
 
       - restore_cache:
           keys:
