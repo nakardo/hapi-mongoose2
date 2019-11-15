@@ -77,3 +77,5 @@ server.route({
 
 await server.mongo.safebox.connection.close();
 ```
+## Dependencies
+`mongoose` needs to be installed alongside this plugin in order to work.
