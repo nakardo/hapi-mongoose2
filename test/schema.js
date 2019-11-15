@@ -1,10 +1,10 @@
 'use strict';
 
-const Joi = require('joi');
+const Joi = require('@hapi/joi');
 const Schema = require('../lib/schema');
-const { expect } = require('code');
+const { expect } = require('@hapi/code');
 
-const lab = exports.lab = require('lab').script();
+const lab = exports.lab = require('@hapi/lab').script();
 const { describe, it } = lab;
 
 describe('Schema.options', () => {

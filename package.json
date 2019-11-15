@@ -1,53 +1,56 @@
 {
   "name": "hapi-mongoose2",
-  "description": "mongoose plugin for hapi-based servers",
-  "author": "Diego Acosta <diegonake@gmail.com>",
-  "license": "MIT",
   "version": "2.0.2",
-  "main": "lib/index.js",
+  "description": "mongoose plugin for hapi-based servers",
   "keywords": [
     "database",
+    "hapi",
+    "hapi-mongoose",
+    "models",
     "mongo",
     "mongodb",
     "mongoose",
-    "models",
-    "schema",
-    "hapi",
     "plugin",
-    "hapi-mongoose"
+    "schema"
   ],
-  "scripts": {
-    "test": "lab -vLa code -t 100"
+  "homepage": "https://github.com/nakardo/hapi-mongoose2#readme",
+  "bugs": {
+    "url": "https://github.com/nakardo/hapi-mongoose2/issues"
   },
-  "engines": {
-    "node": ">=8.9.0"
-  },
-  "dependencies": {
-    "globby": "^9.1.0",
-    "hoek": "^6.1.2",
-    "joi": "^14.3.0",
-    "mongoose": "^5.7.11",
-    "lodash.capitalize": "^4.2.1"
-  },
-  "devDependencies": {
-    "code": "^5.2.4",
-    "hapi": "^17.8.1",
-    "lab": "^18.0.0"
-  },
-  "directories": {
-    "example": "example",
-    "lib": "lib",
-    "test": "test"
-  },
-  "files": [
-    "lib"
-  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/nakardo/hapi-mongoose2.git"
   },
-  "bugs": {
-    "url": "https://github.com/nakardo/hapi-mongoose2/issues"
+  "license": "MIT",
+  "author": "Diego Acosta <diegonake@gmail.com>",
+  "files": [
+    "lib"
+  ],
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "example": "example",
+    "test": "test"
   },
-  "homepage": "https://github.com/nakardo/hapi-mongoose2#readme"
+  "scripts": {
+    "test": "lab -vLa @hapi/code -t 100"
+  },
+  "dependencies": {
+    "@hapi/hoek": "^8.4.0",
+    "@hapi/joi": "^15.1.1",
+    "globby": "^9.2.0",
+    "lodash.capitalize": "^4.2.1"
+  },
+  "devDependencies": {
+    "@hapi/code": "^5.3.1",
+    "@hapi/hapi": "^18.4.0",
+    "@hapi/lab": "^18.1.2",
+    "mongoose": "^5.7.11"
+  },
+  "peerDependencies": {
+    "mongoose": "^5.7.11"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  }
 }

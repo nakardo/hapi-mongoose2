@@ -2,12 +2,12 @@
 
 const HapiMongoose = require('../lib');
 const Mongoose = require('mongoose');
-const Hapi = require('hapi');
-const { expect } = require('code');
+const Hapi = require('@hapi/hapi');
+const { expect } = require('@hapi/code');
 
 const { connected } = Mongoose.STATES;
 
-const lab = exports.lab = require('lab').script();
+const lab = exports.lab = require('@hapi/lab').script();
 const { describe, it } = lab;
 
 it('can be registered once', async () => {
