@@ -36,7 +36,7 @@
     "test": "lab -vLa @hapi/code -t 100"
   },
   "dependencies": {
-    "@hapi/hoek": "^8.4.0",
+    "@hapi/hoek": "^9.0.1",
     "@hapi/joi": "^15.1.1",
     "globby": "^9.2.0",
     "lodash.capitalize": "^4.2.1"
