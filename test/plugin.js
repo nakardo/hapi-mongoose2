@@ -206,7 +206,8 @@ describe('connection', () => {
                         '!test/*.js',
                         '!**/*.json',
                         '!**/invalid-fn.js',
-                        '!test/schemas/fns/admin.js'
+                        '!test/schemas/fns/admin.js',
+                        '!test/schemas/package/index.js'
                     ]
                 }
             }
@@ -219,7 +220,7 @@ describe('connection', () => {
 
         const { models } = server.app.mongo;
         expect(models).to.be.an.object();
-        expect(models).to.only.include(['Animal', 'Blog']);
+        expect(models).to.only.include(['Animal', 'Person', 'Blog']);
     });
 
     it('loads schema functions from patterns and renames keys', async () => {
@@ -255,7 +256,8 @@ describe('connection', () => {
                         'test/**/*.{js,json}',
                         '!test/*.js',
                         '!**/*.json',
-                        '!**/invalid-fn.js'
+                        '!**/invalid-fn.js',
+                        '!test/schemas/package/index.js'
                     ]
                 }
             }
@@ -268,7 +270,7 @@ describe('connection', () => {
 
         const { models } = server.app.mongo;
         expect(models).to.be.an.object();
-        expect(models).to.only.include(['Animal', 'Blog', 'Admin']);
+        expect(models).to.only.include(['Animal', 'Person', 'Blog', 'Admin']);
     });
 
     it('passes server and performs actions on function schemas', async () => {
@@ -304,6 +306,28 @@ describe('connection', () => {
         const admin = await Admin.create(doc);
         await adminCreated;
         await admin.remove();
+    });
+
+    it('loads schemas from package index', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test',
+                    loadSchemasFrom: require('./schemas/package')
+                }
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
+
+        expect(server.app).to.include('mongo');
+        expect(server.app.mongo).to.include('models');
+
+        const { models } = server.app.mongo;
+        expect(models).to.be.an.object();
+        expect(models).to.only.include(['Animal', 'Person']);
     });
 
     it('creates server decoration', async () => {
@@ -373,7 +397,8 @@ describe('connection', () => {
                         'test/**/*.{js,json}',
                         '!test/*.js',
                         '!**/*.json',
-                        '!**/invalid-fn.js'
+                        '!**/invalid-fn.js',
+                        '!test/schemas/package/index.js'
                     ]
                 }
             }
