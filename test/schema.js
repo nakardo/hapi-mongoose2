@@ -9,39 +9,39 @@ const { describe, it } = lab;
 
 describe('Schema.options', () => {
 
-    it('requires connection or connections option', async () => {
+    it('requires connection or connections option', () => {
 
-        await expect(Joi.attempt({}, Schema.options)).to.reject(
+        expect(() => Joi.attempt({}, Schema.options)).to.throw(
             '"value" must contain at least one of [connection, connections]'
         );
     });
 
-    it('requires a uri for connection', async () => {
+    it('requires a uri for connection', () => {
 
         const options = {
             connection: {}
         };
-        await expect(Joi.attempt(options, Schema.options)).to.reject(
+        expect(() => Joi.attempt(options, Schema.options)).to.throw(
             'child "connection" fails because [child "uri" fails because ' +
             '["uri" is required]]'
         );
     });
 
-    it('creates a connection', async () => {
+    it('creates a connection', () => {
 
         const options = {
             connection: {
                 uri: 'mongodb://localhost:27017/test'
             }
         };
-        const result = await Joi.attempt(options, Schema.options);
+        const result = Joi.attempt(options, Schema.options);
         expect(result).to.include('connection');
         expect(result.connection).to.be.an.object();
         expect(result.connection).to.include('uri');
         expect(result.connection.uri).to.equal(options.connection.uri);
     });
 
-    it('creates connection with an alias and trims value', async () => {
+    it('creates connection with an alias and trims value', () => {
 
         const options = {
             connection: {
@@ -49,7 +49,7 @@ describe('Schema.options', () => {
                 alias: 'test-db '
             }
         };
-        const result = await Joi.attempt(options, Schema.options);
+        const result = Joi.attempt(options, Schema.options);
         expect(result).to.include('connection');
         expect(result.connection).to.be.an.object();
         expect(result.connection).to.include('alias');
@@ -58,7 +58,7 @@ describe('Schema.options', () => {
         );
     });
 
-    it('creates connection with loadSchemasFrom', async () => {
+    it('creates connection with loadSchemasFrom', () => {
 
         const options = {
             connection: {
@@ -66,7 +66,7 @@ describe('Schema.options', () => {
                 loadSchemasFrom: ['test/schemas/*']
             }
         };
-        const result = await Joi.attempt(options, Schema.options);
+        const result = Joi.attempt(options, Schema.options);
         expect(result).to.include('connection');
         expect(result.connection).to.be.an.object();
         expect(result.connection).to.include('loadSchemasFrom');
@@ -76,7 +76,7 @@ describe('Schema.options', () => {
         );
     });
 
-    it('creates connection with decorations', async () => {
+    it('creates connection with decorations', () => {
 
         const options = {
             connection: {
@@ -84,13 +84,13 @@ describe('Schema.options', () => {
             },
             decorations: ['server', 'request']
         };
-        const result = await Joi.attempt(options, Schema.options);
+        const result = Joi.attempt(options, Schema.options);
         expect(result).to.include('decorations');
         expect(result.decorations).to.be.an.array();
         expect(result.decorations).to.equal(options.decorations);
     });
 
-    it('expect decorations to be known values', async () => {
+    it('expect decorations to be known values', () => {
 
         const options = {
             connection: {
@@ -98,14 +98,14 @@ describe('Schema.options', () => {
             },
             decorations: ['handler', 'toolkit']
         };
-        await expect(Joi.attempt(options, Schema.options)).to.reject(
+        expect(() => Joi.attempt(options, Schema.options)).to.throw(
             'child \"decorations\" fails because [\"decorations\" at ' +
             'position 0 fails because [\"0\" must be one of [server, ' +
             'request]]]'
         );
     });
 
-    it('creates connection with mongooseOptions', async () => {
+    it('creates connection with mongooseOptions', () => {
 
         const options = {
             connection: {
@@ -120,7 +120,7 @@ describe('Schema.options', () => {
                 }
             }
         };
-        const result = await Joi.attempt(options, Schema.options);
+        const result = Joi.attempt(options, Schema.options);
         expect(result).to.include('connection');
         expect(result.connection).to.be.an.object();
         expect(result.connection).to.not.include('options');
@@ -131,7 +131,7 @@ describe('Schema.options', () => {
         );
     });
 
-    it('doesn\'t strip unknown keys on mongooseOptions', async () => {
+    it('doesn\'t strip unknown keys on mongooseOptions', () => {
 
         const options = {
             connection: {
@@ -141,7 +141,7 @@ describe('Schema.options', () => {
                 }
             }
         };
-        const result = await Joi.attempt(options, Schema.options);
+        const result = Joi.attempt(options, Schema.options);
         expect(result).to.include('connection');
         expect(result.connection).to.be.an.object();
         expect(result.connection).to.not.include('options');
@@ -152,7 +152,7 @@ describe('Schema.options', () => {
         );
     });
 
-    it('disallows setting both connection and connections', async () => {
+    it('disallows setting both connection and connections', () => {
 
         const options = {
             connection: {
@@ -164,7 +164,7 @@ describe('Schema.options', () => {
                 }
             ]
         };
-        await expect(Joi.attempt(options, Schema.options)).to.reject(
+        expect(() => Joi.attempt(options, Schema.options)).to.throw(
             '"value" contains a conflict between exclusive peers ' +
             '[connection, connections]'
         );
