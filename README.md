@@ -10,7 +10,9 @@ Mongoose plugin for hapi-based servers. Supports connecting to one or multiple d
   - `connection` - an object containing:
     - `uri` - a mongo uri string
     - `alias` - (optional) a database name alias used to namespace connections when multiple are created. otherwise ignored.
-    - `loadSchemasFrom` - (optional) an array of [globs](https://github.com/isaacs/minimatch#usage) from where schemas will be loaded. matching files must export a `mongoose.Schema` object or a function with the signature `async function(server)` returning a schema.
+    - `loadSchemasFrom` - (optional) one of:
+       - An array of [globs](https://github.com/isaacs/minimatch#usage) from where schemas will be loaded. matching files must export a `mongoose.Schema` object or a function with the signature `async function(server)` returning a schema.
+       - An object containing `Mongoose.Schema` elements.
     - `options` - (optional) options passed to `mongoose` [createConnection](https://mongoosejs.com/docs/connections.html#options) method. unknown properties are allowed:
       - `auth` - an object with auth credentials
         - `user`
