@@ -22,8 +22,7 @@ describe('Schema.options', () => {
             connection: {}
         };
         expect(() => Joi.attempt(options, Schema.options)).to.throw(
-            'child "connection" fails because [child "uri" fails because ' +
-            '["uri" is required]]'
+            '"connection.uri" is required'
         );
     });
 
@@ -99,9 +98,7 @@ describe('Schema.options', () => {
             decorations: ['handler', 'toolkit']
         };
         expect(() => Joi.attempt(options, Schema.options)).to.throw(
-            'child \"decorations\" fails because [\"decorations\" at ' +
-            'position 0 fails because [\"0\" must be one of [server, ' +
-            'request]]]'
+            '"decorations[0]" must be one of [server, request]'
         );
     });
 
@@ -172,15 +169,15 @@ describe('Schema.options', () => {
 
     it('expect connections to be an array of connection objects', () => {
 
-        const connection = Joi.describe(Schema.connection);
-        expect(connection).to.include('meta');
-        expect(connection.meta).to.include('connection');
+        const connection = Schema.connection.describe();
+        expect(connection).to.include('metas');
+        expect(connection.metas).to.include('connection');
 
-        const { connections } = Joi.describe(Schema.options).children;
+        const { connections } = Schema.options.describe().keys;
         expect(connections.type).to.equal('array');
 
         const item = connections.items[0];
-        expect(item).to.include('meta');
-        expect(item.meta).to.include('connection');
+        expect(item).to.include('metas');
+        expect(item.metas).to.include('connection');
     });
 });
