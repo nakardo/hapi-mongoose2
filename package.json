@@ -36,16 +36,16 @@
     "test": "lab -vLa @hapi/code -t 100"
   },
   "dependencies": {
-    "@hapi/hoek": "^8.4.0",
-    "@hapi/joi": "^15.1.1",
-    "globby": "^9.2.0",
+    "@hapi/hoek": "^9.0.4",
+    "@hapi/joi": "^17.1.1",
+    "globby": "^11.0.0",
     "lodash.capitalize": "^4.2.1"
   },
   "devDependencies": {
-    "@hapi/code": "^5.3.1",
-    "@hapi/hapi": "^18.4.0",
-    "@hapi/lab": "^18.1.2",
-    "mongoose": "^5.7.11"
+    "@hapi/code": "^8.0.1",
+    "@hapi/hapi": "^19.1.1",
+    "@hapi/lab": "^22.0.4",
+    "mongoose": "^5.9.10"
   },
   "peerDependencies": {
     "mongoose": "^5.7.11"
