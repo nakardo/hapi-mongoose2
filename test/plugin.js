@@ -7,6 +7,10 @@ const { expect } = require('@hapi/code');
 
 const { connected } = Mongoose.STATES;
 
+const options = {
+    useUnifiedTopology: true
+};
+
 const lab = exports.lab = require('@hapi/lab').script();
 const { describe, it } = lab;
 
@@ -17,7 +21,8 @@ it('can be registered once', async () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://localhost:27017/test'
+                    uri: 'mongodb://localhost:27017/test',
+                    options
                 }
             }
         },
@@ -25,7 +30,8 @@ it('can be registered once', async () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://localhost:27017/test-2'
+                    uri: 'mongodb://localhost:27017/test-2',
+                    options
                 }
             }
         }
@@ -44,7 +50,8 @@ describe('connection', () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'http://google.com'
+                    uri: 'http://google.com',
+                    options
                 }
             }
         };
@@ -60,7 +67,8 @@ describe('connection', () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://localhost:27017,localhost:27018/test?replicaSet=rs0'
+                    uri: 'mongodb://localhost:27017,localhost:27018/test?replicaSet=rs0',
+                    options
                 }
             }
         };
@@ -76,6 +84,7 @@ describe('connection', () => {
                 connection: {
                     uri: 'mongodb://localhost:27017/test-auth',
                     options: {
+                        ...options,
                         auth: {
                             user: 'user',
                             password: 'password'
@@ -94,7 +103,8 @@ describe('connection', () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://localhost:27017/test'
+                    uri: 'mongodb://localhost:27017/test',
+                    options
                 }
             }
         };
@@ -116,13 +126,14 @@ describe('connection', () => {
         expect(models).to.be.empty();
     });
 
-    it('adds useNewUrlParser by default on mongooseOptions', async () => {
+    it('adds useNewUrlParser by default on options', async () => {
 
         const plugin = {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://localhost:27017/test'
+                    uri: 'mongodb://localhost:27017/test',
+                    options
                 }
             }
         };
@@ -146,7 +157,8 @@ describe('connection', () => {
             options: {
                 connection: {
                     alias: 'test-db',
-                    uri: 'mongodb://localhost:27017/test'
+                    uri: 'mongodb://localhost:27017/test',
+                    options
                 }
             }
         };
@@ -167,7 +179,8 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    loadSchemasFrom: ['test/schemas/empty.json']
+                    loadSchemasFrom: ['test/schemas/empty.json'],
+                    options
                 }
             }
         };
@@ -184,7 +197,8 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    loadSchemasFrom: ['test/schemas/fns/invalid-fn.js']
+                    loadSchemasFrom: ['test/schemas/fns/invalid-fn.js'],
+                    options
                 }
             }
         };
@@ -208,7 +222,8 @@ describe('connection', () => {
                         '!**/invalid-fn.js',
                         '!test/schemas/fns/admin.js',
                         '!test/schemas/package/index.js'
-                    ]
+                    ],
+                    options
                 }
             }
         };
@@ -230,7 +245,8 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    loadSchemasFrom: ['test/schemas/fns/admin.js']
+                    loadSchemasFrom: ['test/schemas/fns/admin.js'],
+                    options
                 }
             }
         };
@@ -258,7 +274,8 @@ describe('connection', () => {
                         '!**/*.json',
                         '!**/invalid-fn.js',
                         '!test/schemas/package/index.js'
-                    ]
+                    ],
+                    options
                 }
             }
         };
@@ -280,7 +297,8 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    loadSchemasFrom: ['test/schemas/fns/admin.js']
+                    loadSchemasFrom: ['test/schemas/fns/admin.js'],
+                    options
                 }
             }
         };
@@ -315,7 +333,8 @@ describe('connection', () => {
             options: {
                 connection: {
                     uri: 'mongodb://localhost:27017/test',
-                    loadSchemasFrom: require('./schemas/package')
+                    loadSchemasFrom: require('./schemas/package'),
+                    options
                 }
             }
         };
@@ -336,7 +355,8 @@ describe('connection', () => {
             plugin: HapiMongoose,
             options: {
                 connection: {
-                    uri: 'mongodb://localhost:27017/test'
+                    uri: 'mongodb://localhost:27017/test',
+                    options
                 },
                 decorations: ['server']
             }
@@ -355,7 +375,8 @@ describe('connection', () => {
                 plugin: HapiMongoose,
                 options: {
                     connection: {
-                        uri: 'mongodb://localhost:27017/test'
+                        uri: 'mongodb://localhost:27017/test',
+                        options
                     },
                     decorations: ['server']
                 }
@@ -399,7 +420,8 @@ describe('connection', () => {
                         '!**/*.json',
                         '!**/invalid-fn.js',
                         '!test/schemas/package/index.js'
-                    ]
+                    ],
+                    options
                 }
             }
         };
@@ -429,10 +451,12 @@ describe('connections', () => {
             options: {
                 connections: [
                     {
-                        uri: 'mongodb://localhost:27017/test-1'
+                        uri: 'mongodb://localhost:27017/test-1',
+                        options
                     },
                     {
-                        uri: 'mongodb://localhost:27017/test-2'
+                        uri: 'mongodb://localhost:27017/test-2',
+                        options
                     }
                 ]
             }
@@ -467,10 +491,12 @@ describe('connections', () => {
                 connections: [
                     {
                         alias: 'test-db',
-                        uri: 'mongodb://localhost:27017/test-1'
+                        uri: 'mongodb://localhost:27017/test-1',
+                        options
                     },
                     {
-                        uri: 'mongodb://localhost:27017/test-2'
+                        uri: 'mongodb://localhost:27017/test-2',
+                        options
                     }
                 ]
             }
@@ -496,11 +522,13 @@ describe('connections', () => {
                 connections: [
                     {
                         uri: 'mongodb://localhost:27017/test-1',
-                        loadSchemasFrom: ['test/**/animal.js']
+                        loadSchemasFrom: ['test/**/animal.js'],
+                        options
                     },
                     {
                         uri: 'mongodb://localhost:27017/test-2',
-                        loadSchemasFrom: ['test/**/blog.js']
+                        loadSchemasFrom: ['test/**/blog.js'],
+                        options
                     }
                 ]
             }
@@ -525,10 +553,12 @@ describe('connections', () => {
             options: {
                 connections: [
                     {
-                        uri: 'mongodb://localhost:27017/test-1'
+                        uri: 'mongodb://localhost:27017/test-1',
+                        options
                     },
                     {
-                        uri: 'mongodb://localhost:27017/test-2'
+                        uri: 'mongodb://localhost:27017/test-2',
+                        options
                     }
                 ],
                 decorations: ['server']
@@ -553,10 +583,12 @@ describe('connections', () => {
                 options: {
                     connections: [
                         {
-                            uri: 'mongodb://localhost:27017/test-1'
+                            uri: 'mongodb://localhost:27017/test-1',
+                            options
                         },
                         {
-                            uri: 'mongodb://localhost:27017/test-2'
+                            uri: 'mongodb://localhost:27017/test-2',
+                            options
                         }
                     ],
                     decorations: ['server']
