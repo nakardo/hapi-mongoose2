@@ -349,6 +349,32 @@ describe('connection', () => {
         expect(models).to.only.include(['Animal', 'Person']);
     });
 
+    it('register models from package index with lowercase names', async () => {
+
+        const plugin = {
+            plugin: HapiMongoose,
+            options: {
+                connection: {
+                    uri: 'mongodb://localhost:27017/test',
+                    loadSchemasFrom: require('./schemas/package'),
+                    options
+                }
+            }
+        };
+        const server = Hapi.server();
+        await server.register(plugin);
+
+        expect(server.app).to.include('mongo');
+        expect(server.app.mongo).to.include('models');
+
+        let models = server.app.mongo.models;
+        expect(models).to.be.an.object();
+        expect(models).to.only.include(['Animal', 'Person']);
+        models = server.app.mongo.connection.models;
+        expect(models).to.be.an.object();
+        expect(models).to.only.include(['animal', 'person']);
+    });
+
     it('creates server decoration', async () => {
 
         const plugin = {
