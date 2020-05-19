@@ -1,6 +1,6 @@
 {
   "name": "hapi-mongoose2",
-  "version": "4.0.0",
+  "version": "4.1.0",
   "description": "mongoose plugin for hapi-based servers",
   "keywords": [
     "database",
